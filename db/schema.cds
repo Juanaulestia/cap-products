@@ -1,33 +1,39 @@
 namespace com.logali;
 
+type Address {
+    Street     : String;
+    City       : String;
+    State      : String;
+    PostalCode : String;
+    Country    : String;
+
+}
+
+
 entity Products {
 
-    key ID              : UUID;
-        Name            : String;
-        Description     : String;
-        ImageUrl        : String;
-        ReleseDate      : DateTime;
-        DiscotinuedDate : DateTime;
-        Price           : Decimal(16, 2);
-        Height          : Decimal(16, 2);
-        Width           : Decimal(16, 2);
-        Depth           : Decimal(16, 2);
-        Quantity        : Decimal(16, 2);
+    key ID               : UUID;
+        Name             : String;
+        Description      : String;
+        ImageUrl         : String;
+        ReleaseDate      : DateTime default $now;
+        DiscontinuedDate : DateTime;
+        Price            : Decimal(16, 2);
+        Height           : Decimal(16, 2);
+        Width            : Decimal(16, 2);
+        Depth            : Decimal(16, 2);
+        Quantity         : Decimal(16, 2);
 
 };
 
 entity Supplier {
 
-    key ID         : UUID;
-        Name       : String;
-        Street     : String;
-        City       : String;
-        State      : String(2);
-        PostalCode : String(5);
-        Country    : String(3);
-        Email      : String;
-        Phone      : String;
-        Fax        : String;
+    key ID      : UUID;
+        Name    : String;
+        Address : Address;
+        Email   : String;
+        Phone   : String;
+        Fax     : String;
 
 };
 
@@ -70,12 +76,13 @@ entity Months {
 entity ProductReview {
     key Name    : String;
         Rating  : Integer;
-        Commnet : String;
+        Comment : String;
 };
 
 entity SalesDate {
 
-    key DeliveryDate : DateTime;
+    key ID           : UUID;
+        DeliveryDate : DateTime;
         Revenue      : Decimal(16, 2);
 
-}
+};
