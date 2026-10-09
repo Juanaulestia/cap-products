@@ -23,7 +23,15 @@ entity Products {
         Width            : Decimal(16, 2);
         Depth            : Decimal(16, 2);
         Quantity         : Decimal(16, 2);
-
+        Supplier         : Association to one Supplier;
+        UnitOfMeasure    : Association to one UnitOfMeasure;
+        Currency         : Association to one Currencies;
+        DimensionUnit    : Association to one DimensionsUnit;
+        Category         : Association to one Category;
+        SalesData        : Association to many SalesData
+                               on SalesData.Product = $self;
+        Reviews          : Association to many ProductReview
+                               on Reviews.Product = $self;
 };
 
 entity Supplier {
@@ -34,6 +42,8 @@ entity Supplier {
         Email   : String;
         Phone   : String;
         Fax     : String;
+        Product : Association to many Products
+                      on Product.Supplier = $self;
 
 };
 
@@ -74,15 +84,25 @@ entity Months {
 }
 
 entity ProductReview {
-    key Name    : String;
+    key ID      : UUID;
+        Name    : String;
         Rating  : Integer;
         Comment : String;
+        Product : Association to one Products;
 };
 
-entity SalesDate {
+entity SalesData {
 
-    key ID           : UUID;
-        DeliveryDate : DateTime;
-        Revenue      : Decimal(16, 2);
-
+    key ID            : UUID;
+        DeliveryDate  : DateTime;
+        Revenue       : Decimal(16, 2);
+        Product       : Association to one Products;
+        Currency      : Association to one Currencies;
+        DeliveryMonth : Association to one Months;
 };
+
+
+extend Products with {
+    PriceCondition     : String(2);
+    PriceDetermination : String(3);
+}
