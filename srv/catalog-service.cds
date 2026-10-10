@@ -8,4 +8,8 @@ service CatlogService {
     entity DimensionUnit as projection on logali.DimensionsUnit;
     entity SalesData     as projection on logali.SalesData;
     entity Reviews       as projection on logali.ProductReview;
+    entity Category      as projection on logali.Category;
+    entity Months        as projection on logali.Months;
+    entity Order         as projection on logali.Orders;
+    entity OrderItem     as projection on logali.OrderItems;
 }
