@@ -37,9 +37,18 @@ context materials {
         Category         : Association to one Category;
         SalesData        : Association to many sales.SalesData
                                on SalesData.Product = $self;
-        Reviews          : Association to many sales.ProductReview
+        Reviews          : Association to many ProductReview
                                on Reviews.Product = $self;
     };
+
+       entity ProductReview : cuid, managed {
+
+        Name    : String;
+        Rating  : Integer;
+        Comment : String;
+        Product : Association to one materials.Products;
+    };
+
 
 
     entity Category {
@@ -119,14 +128,7 @@ context sales {
             ShortDescription : localized String(3);
     };
 
-    entity ProductReview : cuid, managed {
-
-        Name    : String;
-        Rating  : Integer;
-        Comment : String;
-        Product : Association to one materials.Products;
-    };
-
+ 
     entity SalesData : cuid {
 
         DeliveryDate  : DateTime;
