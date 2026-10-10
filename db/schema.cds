@@ -41,14 +41,13 @@ context materials {
                                on Reviews.Product = $self;
     };
 
-       entity ProductReview : cuid, managed {
+    entity ProductReview : cuid, managed {
 
         Name    : String;
         Rating  : Integer;
         Comment : String;
         Product : Association to one materials.Products;
     };
-
 
 
     entity Category {
@@ -128,7 +127,7 @@ context sales {
             ShortDescription : localized String(3);
     };
 
- 
+
     entity SalesData : cuid {
 
         DeliveryDate  : DateTime;
@@ -137,5 +136,39 @@ context sales {
         Currency      : Association to one materials.Currencies;
         DeliveryMonth : Association to one Months;
     };
+
+}
+
+context reports {
+
+    entity AverageRaiting as
+        select from logali.materials.ProductReview {
+            Product.ID  as ProductId,
+            avg(Rating) as AverageRaiting : Decimal(16, 2)
+        }
+        group by
+            Product.ID;
+
+    entity Products       as
+        select from logali.materials.Products
+        mixin {
+            ToStockAvailability : Association to one logali.materials.StockAvailability
+                                      on ToStockAvailability.ID = $projection.StockAvailability;
+            ToAverageRaiting    : Association to one AverageRaiting
+                                      on ToAverageRaiting.ProductId = ID;
+
+        }
+        into {
+            *,
+            ToAverageRaiting.AverageRaiting as Raiting,
+            case
+                when Quantity >= 8
+                     then 3
+                when Quantity > 0
+                     then 2
+                else 1
+            end                             as StockAvailability : Integer,
+            ToStockAvailability
+        }
 
 }
