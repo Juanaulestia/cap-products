@@ -17,7 +17,7 @@ using {com.logali as logali} from '../db/schema';
 define service CatalogService {
 
     entity Products          as
-        select from logali.materials.Products {
+        select from logali.reports.Products {
 
             ID,
             Name          as ProductName @mandatory,
@@ -29,7 +29,13 @@ define service CatalogService {
             Height,
             Width,
             Depth,
-            Quantity,
+            Quantity                     @(
+                mandatory,
+                assert.range: [
+                    0.00,
+                    20.00
+                ]
+            ),
             UnitOfMeasure as ToUnitOfMeasure,
             Currency      as ToCurrency  @mandatory,
             Category      as ToCategory  @mandatory,
@@ -38,6 +44,9 @@ define service CatalogService {
             SalesData,
             Supplier,
             Reviews,
+            Raiting,
+            StockAvailability,
+            ToStockAvailability,
 
         };
 
@@ -64,7 +73,6 @@ define service CatalogService {
         };
 
     @readonly
-
     entity SalesData         as
         select from logali.sales.SalesData {
             ID,
@@ -108,8 +116,26 @@ define service CatalogService {
 
     @readonly
     entity VH_DimensionUnits as
-        select from logali.materials.DimensionsUnit {
+        select
             ID          as Code,
-            Description as Text,
-        };
+            Description as Text
+        from logali.materials.DimensionsUnit;
+
 };
+
+define service Reports {
+
+    entity AverageRaiting as projection on logali.reports.AverageRaiting;
+
+    entity EntityCasting   as
+        select
+            cast(
+                Price as Integer
+            )     as Price,
+            Price as Price2 : Integer
+        from logali.materials.Products;
+
+        entity EntityExists as select from logali.materials.Products{
+            Name
+        } where exists Supplier[Name = 'Office World'];
+}
