@@ -13,7 +13,6 @@ using {com.logali as logali} from '../db/schema';
 //     entity Order         as projection on logali.sales.Orders;
 //     entity OrderItem     as projection on logali.sales.OrderItems;
 // }
-
 define service CatalogService {
 
     entity Products          as
