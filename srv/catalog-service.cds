@@ -40,88 +40,81 @@ define service CatalogService {
     entity Supplier          as
         select from logali.sales.Supplier {
 
-            ID,
-            Name,
-            Email,
-            Phone,
-            Fax,
-            Product as ToProduct
+            key ID,
+                Name,
+                Email,
+                Phone,
+                Fax,
+                Product as ToProduct
         };
 
     entity Reviews           as
         select from logali.materials.ProductReview {
-            ID,
-            Rating,
-            Comment,
-            createdAt,
-            Product as ToProduct,
+            key ID,
+                Rating,
+                Comment,
+                createdAt,
+                Product as ToProduct,
 
         };
 
     @readonly
     entity SalesData         as
         select from logali.sales.SalesData {
-            ID,
-            DeliveryDate,
-            Revenue,
-            Currency.ID               as CurrencyKey,
-            DeliveryMonth.ID          as DeliveryMonthId,
-            DeliveryMonth.Description as DeliveryMonth,
-            Product                   as ToProduct,
+            key ID,
+                DeliveryDate,
+                Revenue,
+                Currency.ID               as CurrencyKey,
+                DeliveryMonth.ID          as DeliveryMonthId,
+                DeliveryMonth.Description as DeliveryMonth,
+                Product                   as ToProduct,
         };
 
     @readonly
     entity StockAvailability as
         select from logali.materials.StockAvailability {
 
-            ID,
-            Description,
-            Product as ToProduct,
+            key ID,
+                Description,
+                Product as ToProduct,
         };
 
     @readonly
     entity VH_Category       as
         select from logali.materials.Category {
-            ID   as Code,
-            Name as Text,
+            key ID   as Code,
+                Name as Text,
         };
 
     @readonly
     entity VH_Currency       as
         select from logali.materials.Currencies {
-            ID          as Code,
-            Description as Text,
+            key ID          as Code,
+                Description as Text,
         };
 
     @readonly
     entity VH_UnitOfMeasure  as
         select from logali.materials.UnitOfMeasure {
-            ID          as Code,
-            Description as Text,
+            key ID          as Code,
+                Description as Text,
         };
 
     @readonly
     entity VH_DimensionUnits as
         select
-            ID          as Code,
-            Description as Text
+            key ID          as Code,
+                Description as Text
         from logali.materials.DimensionsUnit;
 
 };
 
 define service Reports {
 
-    entity AverageRaiting as projection on logali.reports.AverageRaiting;
+    entity AverageRaiting as
+        projection on logali.reports.AverageRaiting {
+            key ProductId,
+                AverageRaiting,
+        };
 
-    entity EntityCasting   as
-        select
-            cast(
-                Price as Integer
-            )     as Price,
-            Price as Price2 : Integer
-        from logali.materials.Products;
-
-        entity EntityExists as select from logali.materials.Products{
-            Name
-        } where exists Supplier[Name = 'Office World'];
 }

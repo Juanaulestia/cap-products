@@ -4,21 +4,24 @@
   "type": "module",
   "dependencies": {
     "@cap-js/graphql": "^0.14.0",
+    "@cap-js/hana": "^3",
     "@sap-cloud-sdk/connectivity": "^4",
     "@sap-cloud-sdk/http-client": "^4",
     "@sap-cloud-sdk/resilience": "^4",
     "@sap/cds": "^10",
     "@sap/cds-odata-v2-adapter-proxy": "^1.9.21",
+    "@sap/xssec": "^4",
     "cors": "^2.8.6",
     "dotenv": "^18.0.7"
   },
   "devDependencies": {
     "@cap-js/sqlite": "^3",
-    "cds-swagger-ui-express": "^0.11.0",
-    "cds-plugin-ui5": "^0.17.0"
+    "@sap/cds-dk": "^10",
+    "cds-plugin-ui5": "^0.17.0",
+    "cds-swagger-ui-express": "^0.11.0"
   },
   "scripts": {
-    "start": "cds watch",
+    "start": "cds-serve",
     "watch-product": "cds watch --open logaligrop.product/index.html?sap-ui-xx-viewCache=false --livereload false"
   },
   "private": true,
@@ -39,10 +42,16 @@
         "kind": "odata-v2",
         "model": "srv/external/API_BUSINESS_PARTNER",
         "credentials": {
-          "url": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_BUSINESS_PARTNER",
+          "destination": "API_BUSINESS_PARTNER",
           "requestTimeout": 10000
         }
-      }
+      },
+      "[production]": {
+        "auth": "xsuaa"
+      },
+      "destinations": true,
+      "html5-repo": true,
+      "workzone": true
     }
   },
   "workspaces": [
