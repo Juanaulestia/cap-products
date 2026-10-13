@@ -143,8 +143,8 @@ context reports {
 
     entity AverageRaiting as
         select from logali.materials.ProductReview {
-            Product.ID  as ProductId,
-            avg(Rating) as AverageRaiting : Decimal(16, 2)
+            key Product.ID  as ProductId,
+                avg(Rating) as AverageRaiting : Decimal(16, 2)
         }
         group by
             Product.ID;
@@ -162,7 +162,8 @@ context reports {
             *,
             ToAverageRaiting.AverageRaiting as Raiting,
             case
-                when Quantity <= 100 and Quantity >=80
+                when Quantity <= 100
+                     and Quantity >= 80
                      then 2
                 when Quantity >= 101
                      then 1
