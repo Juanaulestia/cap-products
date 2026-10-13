@@ -65,7 +65,7 @@ annotate service.Products with @(
                 $Type: 'UI.DataField',
                 Label: '{i18n>categoryLabel}',
                 Value: Category
-            }, // 🟩 CORRECTO: Existe en la línea 28
+            }, 
             {
                 $Type: 'UI.DataField',
                 Label: '{i18n>uomLabel}',
