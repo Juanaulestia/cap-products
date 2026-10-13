@@ -162,11 +162,11 @@ context reports {
             *,
             ToAverageRaiting.AverageRaiting as Raiting,
             case
-                when Quantity >= 8
-                     then 3
-                when Quantity > 0
+                when Quantity <= 100 and Quantity >=80
                      then 2
-                else 1
+                when Quantity >= 101
+                     then 1
+                else 3
             end                             as StockAvailability : Integer,
             ToStockAvailability
         }
